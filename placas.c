@@ -262,6 +262,12 @@ FASE DE COMUNICACION Y PROMEDIO
 
 
   for(con1=0;con1<2;con1++){
+   
+    /*
+      ---------------------------------------------------------------------------------
+      FASE COMUNICACION
+      ---------------------------------------------------------------------------------
+    */
     //Se comunica el cero
     if(world_rank==0){
       MPI_Send(vpi,nfilas,MPI_FLOAT,1,0,MPI_COMM_WORLD);
@@ -281,6 +287,13 @@ FASE DE COMUNICACION Y PROMEDIO
 
 
     MPI_Barrier(MPI_COMM_WORLD);
+    /*
+      ---------------------------------------------------------------------------------------
+      FASE DE PROMEDIO
+      ---------------------------------------------------------------------------------------
+    */
+    if(world_rank ==0){
+    }
   }
 
   for(con1=0;con1<world_size;con1++){
