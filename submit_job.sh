@@ -1,8 +1,8 @@
 #PBS -q batch
-#PBS -N test_scheduler
+#PBS -N out
 #PBS -l nodes=16:ppn=4
 #PBS -M mneira011@gmail.com
-#PBS -m placas
+#PBS -m abe
 
 module load openmpi/1.8.5
 cd $PBS_O_WORKDIR

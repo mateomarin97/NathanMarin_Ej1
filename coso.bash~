@@ -1,2 +1,0 @@
-mpicc -o placas.x placas.c
-qsub 
