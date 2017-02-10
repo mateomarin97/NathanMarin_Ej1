@@ -598,20 +598,27 @@ FASE DE COMUNICACION Y PROMEDIO
         printf("%f ",vps[con1] );
       }
       printf("\n");
+
+
+
       //las lineas del sanduche
       for(con1 = 0 ; con1<nfilas*(fpp-2);con1++){
-        if(con1%(nfilas)==(nfilas-1)){
-          printf("%f \n",vp[con1] );
-        }else{
+
           printf("%f ",vp[con1] );
-        }
+          if(con1%(nfilas)==(nfilas-1)){
+            printf("\n" );
+          }
       }
-      
+
+
+
       //la ultima linea
       for(con1 = 0 ; con1<nfilas;con1++){
         printf("%f ",vpi[con1] );
       }
       printf("\n");
+
+
     }
     MPI_Barrier(MPI_COMM_WORLD);
   }
