@@ -594,11 +594,11 @@ FASE DE COMUNICACION Y PROMEDIO
       //cada proc imprime los suyo
 
       // //la primera linea
-      //  for(con1 = 0 ; con1<nfilas;con1++){
-      //   printf("%f ",vps[con1] );
-      // }
-      // printf("\n");
-      //
+       for(con1 = 0 ; con1<nfilas;con1++){
+        printf("%f ",vps[con1] );
+      }
+      printf("\n");
+      
       //
       //
       // //las lineas del sanduche
@@ -613,12 +613,12 @@ FASE DE COMUNICACION Y PROMEDIO
       //
 
       //la ultima linea
-      for(con1 = 0 ; con1 < nfilas ; con1++){
-        printf("%f ",vpi[con1] );
-        if(con1%(nfilas)==(nfilas-1)){
-          printf("\n" );
-        }
-      }
+      // for(con1 = 0 ; con1 < nfilas ; con1++){
+      //   printf("%f ",vpi[con1] );
+      //   if(con1%(nfilas)==(nfilas-1)){
+      //     printf("\n" );
+      //   }
+      // }
 
 
 
