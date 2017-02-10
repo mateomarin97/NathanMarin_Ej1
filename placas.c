@@ -301,11 +301,11 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
       //primera fila
-      vps[0] = (1-w)*vps[0] + (w/4)*(vps[1]+vp[0]);
+      vps[0] = (1-w)*vps[0] + (w/4.0)*(vps[1]+vp[0]);
       for(con = 1 ; con<(nfilas-1);con++){
-        vps[con] = (1-w)*vps[con] + (w/4)*(vps[con-1]+vps[con+1]+vp[con]);
+        vps[con] = (1-w)*vps[con] + (w/4.0)*(vps[con-1]+vps[con+1]+vp[con]);
       }
-      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4)*(vps[nfilas-2]+vp[nfilas-1]);
+      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4.0)*(vps[nfilas-2]+vp[nfilas-1]);
 
 
 
@@ -315,7 +315,7 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
       //la primera casilla
-      vp[0] = (1-w)*vp[0] + (w/4)*(vp[1]+vp[nfilas]+vps[0]);
+      vp[0] = (1-w)*vp[0] + (w/4.0)*(vp[1]+vp[nfilas]+vps[0]);
       //itermos sobre vp
       for(con = 1 ; con<((nfilas*(fpp-2))-1);con++){
         //nos despreocupamos con un excelente machete las placas
@@ -325,31 +325,31 @@ FASE DE COMUNICACION Y PROMEDIO
           if( con!=(nfilas-1) && con!=((nfilas*(fpp-2)-1)-nfilas+1)){
             //fila superior
             if(con>0&&con<nfilas-1){
-              vp[con]= (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
+              vp[con]= (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
             }
             //columna izq
             else if(con%nfilas==0){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
             }
             //columan der
             else if(con%nfilas == (nfilas-1)){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
             }
             //fila inferior
             else if(con>((nfilas*(fpp-2)-1)-nfilas+1)){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
             }
             //los puntos adentro
             else{
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
             }
 
           }
           else if(con==(nfilas-1)){
-            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vps[con]+vp[con+nfilas]);
+            vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-1]+vps[con]+vp[con+nfilas]);
           }
           else if(con==((nfilas*(fpp-2)-1)-nfilas+1)){
-            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
+            vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
           }
 
 
@@ -357,7 +357,7 @@ FASE DE COMUNICACION Y PROMEDIO
         }
       }
 
-      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
+      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4.0)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
 
       /*
       ----------------------------------------------------------------------------
@@ -365,11 +365,11 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
 
-      vpi[0] = (1-w)*vpi[0] + (w/4)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)] + vei[0]);
+      vpi[0] = (1-w)*vpi[0] + (w/4.0)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)] + vei[0]);
       for(con = 1 ; con<(nfilas-1);con++){
-        vpi[con] = (1-w)*vpi[con] + (w/4)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]+vei[con]);
+        vpi[con] = (1-w)*vpi[con] + (w/4.0)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]+vei[con]);
       }
-      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]+vei[nfilas-1]);
+      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4.0)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]+vei[nfilas-1]);
 
 
 
@@ -389,11 +389,11 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
       //primera fila
-      vps[0] = (1-w)*vps[0] + (w/4)*(vps[1]+vp[0]+ves[0]);
+      vps[0] = (1-w)*vps[0] + (w/4.0)*(vps[1]+vp[0]+ves[0]);
       for(con = 1 ; con<(nfilas-1);con++){
-        vps[con] = (1-w)*vps[con] + (w/4)*(vps[con-1]+vps[con+1]+vp[con]+ves[con]);
+        vps[con] = (1-w)*vps[con] + (w/4.0)*(vps[con-1]+vps[con+1]+vp[con]+ves[con]);
       }
-      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4)*(vps[nfilas-2]+vp[nfilas-1] + ves[nfilas-1]);
+      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4.0)*(vps[nfilas-2]+vp[nfilas-1] + ves[nfilas-1]);
 
       /*
       ----------------------------------------------------------------------------
@@ -401,7 +401,7 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
       //la primera casilla
-      vp[0] = (1-w)*vp[0] + (w/4)*(vp[1]+vp[nfilas]+vps[0]);
+      vp[0] = (1-w)*vp[0] + (w/4.0)*(vp[1]+vp[nfilas]+vps[0]);
       //itermos sobre vp
       for(con = 1 ; con<((nfilas*(fpp-2))-1);con++){
         //nos despreocupamos con un excelente machete las placas
@@ -411,31 +411,31 @@ FASE DE COMUNICACION Y PROMEDIO
           if( con!=(nfilas-1) && con!=((nfilas*(fpp-2)-1)-nfilas+1)){
             //fila superior
             if(con>0&&con<nfilas-1){
-              vp[con]= (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
+              vp[con]= (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
             }
             //columna izq
             else if(con%nfilas==0){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
             }
             //columan der
             else if(con%nfilas == (nfilas-1)){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
             }
             //fila inferior
             else if(con>((nfilas*(fpp-2)-1)-nfilas+1)){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
             }
             //los puntos adentro
             else{
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
             }
 
           }
           else if(con==(nfilas-1)){
-            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vps[con]+vp[con+nfilas]);
+            vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-1]+vps[con]+vp[con+nfilas]);
           }
           else if(con==((nfilas*(fpp-2)-1)-nfilas+1)){
-            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
+            vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
           }
 
 
@@ -443,7 +443,7 @@ FASE DE COMUNICACION Y PROMEDIO
         }
       }
 
-      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
+      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4.0)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
 
       /*
       ----------------------------------------------------------------------------
@@ -451,11 +451,11 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
 
-      vpi[0] = (1-w)*vpi[0] + (w/4)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)]);
+      vpi[0] = (1-w)*vpi[0] + (w/4.0)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)]);
       for(con = 1 ; con<(nfilas-1);con++){
-        vpi[con] = (1-w)*vpi[con] + (w/4)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]);
+        vpi[con] = (1-w)*vpi[con] + (w/4.0)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]);
       }
-      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]);
+      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4.0)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]);
 
 
 
@@ -468,11 +468,11 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
       //primera fila
-      vps[0] = (1-w)*vps[0] + (w/4)*(vps[1]+vp[0]+ves[0]);
+      vps[0] = (1-w)*vps[0] + (w/4.0)*(vps[1]+vp[0]+ves[0]);
       for(con = 1 ; con<(nfilas-1);con++){
-        vps[con] = (1-w)*vps[con] + (w/4)*(vps[con-1]+vps[con+1]+vp[con]+ves[con]);
+        vps[con] = (1-w)*vps[con] + (w/4.0)*(vps[con-1]+vps[con+1]+vp[con]+ves[con]);
       }
-      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4)*(vps[nfilas-2]+vp[nfilas-1] + ves[nfilas-1]);
+      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4.0)*(vps[nfilas-2]+vp[nfilas-1] + ves[nfilas-1]);
 
       /*
       ----------------------------------------------------------------------------
@@ -480,7 +480,7 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
       //la primera casilla
-      vp[0] = (1-w)*vp[0] + (w/4)*(vp[1]+vp[nfilas]+vps[0]);
+      vp[0] = (1-w)*vp[0] + (w/4.0)*(vp[1]+vp[nfilas]+vps[0]);
       //itermos sobre vp
       for(con = 1 ; con<((nfilas*(fpp-2))-1);con++){
         //nos despreocupamos con un excelente machete las placas
@@ -490,31 +490,31 @@ FASE DE COMUNICACION Y PROMEDIO
           if( con!=(nfilas-1) && con!=((nfilas*(fpp-2)-1)-nfilas+1)){
             //fila superior
             if(con>0&&con<nfilas-1){
-              vp[con]= (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
+              vp[con]= (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
             }
             //columna izq
             else if(con%nfilas==0){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
             }
             //columan der
             else if(con%nfilas == (nfilas-1)){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
             }
             //fila inferior
             else if(con>((nfilas*(fpp-2)-1)-nfilas+1)){
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
             }
             //los puntos adentro
             else{
-              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+              vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
             }
 
           }
           else if(con==(nfilas-1)){
-            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vps[con]+vp[con+nfilas]);
+            vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-1]+vps[con]+vp[con+nfilas]);
           }
           else if(con==((nfilas*(fpp-2)-1)-nfilas+1)){
-            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
+            vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
           }
 
 
@@ -522,7 +522,7 @@ FASE DE COMUNICACION Y PROMEDIO
         }
       }
 
-      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
+      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4.0)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
 
       /*
       ----------------------------------------------------------------------------
@@ -530,13 +530,13 @@ FASE DE COMUNICACION Y PROMEDIO
       ----------------------------------------------------------------------------
       */
 
-      vpi[0] = (1-w)*vpi[0] + (w/4)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)] + vei[0]);
+      vpi[0] = (1-w)*vpi[0] + (w/4.0)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)] + vei[0]);
       for(con = 1 ; con<(nfilas-1);con++){
         if(vpi[con]!=50.0 && vpi[con]!=-50.0 ){
-          vpi[con] = (1-w)*vpi[con] + (w/4)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]+vei[con]);
+          vpi[con] = (1-w)*vpi[con] + (w/4.0)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]+vei[con]);
         }
       }
-      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]+vei[nfilas-1]);
+      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4.0)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]+vei[nfilas-1]);
 
 
 
