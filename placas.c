@@ -83,16 +83,16 @@ DECLARACION - DECLARACION - DECLARACION
   }
 
   if(world_rank==0){
-    
+
     vei = malloc(nfilas*sizeof(float));
   }
   else if(world_rank == (world_size-1)){
-    
+
     ves = malloc(nfilas*sizeof(float));
   }
   else{
     ves = malloc(nfilas*sizeof(float));
-   
+
     vei = malloc(nfilas*sizeof(float));
   }
 
@@ -262,7 +262,7 @@ FASE DE COMUNICACION Y PROMEDIO
 
 
   for(con1=0;con1<2;con1++){
-   
+
     /*
       ---------------------------------------------------------------------------------
       FASE COMUNICACION
@@ -287,15 +287,266 @@ FASE DE COMUNICACION Y PROMEDIO
 
 
     MPI_Barrier(MPI_COMM_WORLD);
+
     /*
       ---------------------------------------------------------------------------------------
       FASE DE PROMEDIO
       ---------------------------------------------------------------------------------------
     */
-    if(world_rank ==0){
+    //primer procesador
+    if(world_rank==0){
+      /*
+      ----------------------------------------------------------------------------
+      VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS
+      ----------------------------------------------------------------------------
+      */
+      //primera fila
+      vps[0] = (1-w)*vps[0] + (w/4)*(vps[1]+vp[0]);
+      for(con = 1 ; con<(nfilas-1);con++){
+        vps[con] = (1-w)*vps[con] + (w/4)*(vps[con-1]+vps[con+1]+vp[con]);
+      }
+      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4)*(vps[nfilas-2]+vp[nfilas-1]);
+
+
+
+      /*
+      ----------------------------------------------------------------------------
+      VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP
+      ----------------------------------------------------------------------------
+      */
+      //la primera casilla
+      vp[0] = (1-w)*vp[0] + (w/4)*(vp[1]+vp[nfilas]+vps[0]);
+      //itermos sobre vp
+      for(con = 1 ; con<((nfilas*(fpp-2))-1);con++){
+        //nos despreocupamos con un excelente machete las placas
+        if(vp[con]!=50.0 && vp[con]!=-50.0 ){
+
+          //puntos no problematicos (esquinas)
+          if( con!=(nfilas-1) && con!=((nfilas*(fpp-2)-1)-nfilas+1)){
+            //fila superior
+            if(con>0&&con<nfilas-1){
+              vp[con]= (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
+            }
+            //columna izq
+            else if(con%nfilas==0){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
+            }
+            //columan der
+            else if(con%nfilas == (nfilas-1)){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+            }
+            //fila inferior
+            else if(con>((nfilas*(fpp-2)-1)-nfilas+1)){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
+            }
+            //los puntos adentro
+            else{
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+            }
+
+          }
+          else if(con==(nfilas-1)){
+            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vps[con]+vp[con+nfilas]);
+          }
+          else if(con==((nfilas*(fpp-2)-1)-nfilas+1)){
+            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
+          }
+
+
+
+        }
+      }
+
+      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
+
+      /*
+      ----------------------------------------------------------------------------
+      VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI
+      ----------------------------------------------------------------------------
+      */
+
+      vpi[0] = (1-w)*vpi[0] + (w/4)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)] + vei[0]);
+      for(con = 1 ; con<(nfilas-1);con++){
+        vpi[con] = (1-w)*vpi[con] + (w/4)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]+vei[con]);
+      }
+      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]+vei[nfilas-1]);
+
+
+
+
     }
+
+
+
+    //ultimo procesador
+
+
+    else if(world_rank == (world_size-1)){
+
+      /*
+      ----------------------------------------------------------------------------
+      VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS
+      ----------------------------------------------------------------------------
+      */
+      //primera fila
+      vps[0] = (1-w)*vps[0] + (w/4)*(vps[1]+vp[0]+ves[0]);
+      for(con = 1 ; con<(nfilas-1);con++){
+        vps[con] = (1-w)*vps[con] + (w/4)*(vps[con-1]+vps[con+1]+vp[con]+ves[con]);
+      }
+      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4)*(vps[nfilas-2]+vp[nfilas-1] + ves[nfilas-1]);
+
+      /*
+      ----------------------------------------------------------------------------
+      VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP
+      ----------------------------------------------------------------------------
+      */
+      //la primera casilla
+      vp[0] = (1-w)*vp[0] + (w/4)*(vp[1]+vp[nfilas]+vps[0]);
+      //itermos sobre vp
+      for(con = 1 ; con<((nfilas*(fpp-2))-1);con++){
+        //nos despreocupamos con un excelente machete las placas
+        if(vp[con]!=50.0 && vp[con]!=-50.0 ){
+
+          //puntos no problematicos (esquinas)
+          if( con!=(nfilas-1) && con!=((nfilas*(fpp-2)-1)-nfilas+1)){
+            //fila superior
+            if(con>0&&con<nfilas-1){
+              vp[con]= (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
+            }
+            //columna izq
+            else if(con%nfilas==0){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
+            }
+            //columan der
+            else if(con%nfilas == (nfilas-1)){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+            }
+            //fila inferior
+            else if(con>((nfilas*(fpp-2)-1)-nfilas+1)){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
+            }
+            //los puntos adentro
+            else{
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+            }
+
+          }
+          else if(con==(nfilas-1)){
+            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vps[con]+vp[con+nfilas]);
+          }
+          else if(con==((nfilas*(fpp-2)-1)-nfilas+1)){
+            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
+          }
+
+
+
+        }
+      }
+
+      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
+
+      /*
+      ----------------------------------------------------------------------------
+      VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI
+      ----------------------------------------------------------------------------
+      */
+
+      vpi[0] = (1-w)*vpi[0] + (w/4)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)]);
+      for(con = 1 ; con<(nfilas-1);con++){
+        vpi[con] = (1-w)*vpi[con] + (w/4)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]);
+      }
+      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]);
+
+
+
+    }
+    //procesadores ensanduchados
+    else{
+      /*
+      ----------------------------------------------------------------------------
+      VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS - VPS
+      ----------------------------------------------------------------------------
+      */
+      //primera fila
+      vps[0] = (1-w)*vps[0] + (w/4)*(vps[1]+vp[0]+ves[0]);
+      for(con = 1 ; con<(nfilas-1);con++){
+        vps[con] = (1-w)*vps[con] + (w/4)*(vps[con-1]+vps[con+1]+vp[con]+ves[con]);
+      }
+      vps[nfilas-1] = (1-w)*vps[nfilas-1] + (w/4)*(vps[nfilas-2]+vp[nfilas-1] + ves[nfilas-1]);
+
+      /*
+      ----------------------------------------------------------------------------
+      VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP-VP -VP
+      ----------------------------------------------------------------------------
+      */
+      //la primera casilla
+      vp[0] = (1-w)*vp[0] + (w/4)*(vp[1]+vp[nfilas]+vps[0]);
+      //itermos sobre vp
+      for(con = 1 ; con<((nfilas*(fpp-2))-1);con++){
+        //nos despreocupamos con un excelente machete las placas
+        if(vp[con]!=50.0 && vp[con]!=-50.0 ){
+
+          //puntos no problematicos (esquinas)
+          if( con!=(nfilas-1) && con!=((nfilas*(fpp-2)-1)-nfilas+1)){
+            //fila superior
+            if(con>0&&con<nfilas-1){
+              vp[con]= (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
+            }
+            //columna izq
+            else if(con%nfilas==0){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
+            }
+            //columan der
+            else if(con%nfilas == (nfilas-1)){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+            }
+            //fila inferior
+            else if(con>((nfilas*(fpp-2)-1)-nfilas+1)){
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vpi[con%nfilas]);
+            }
+            //los puntos adentro
+            else{
+              vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vp[con-1]+vp[con-nfilas]+vp[con+nfilas]);
+            }
+
+          }
+          else if(con==(nfilas-1)){
+            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con-1]+vps[con]+vp[con+nfilas]);
+          }
+          else if(con==((nfilas*(fpp-2)-1)-nfilas+1)){
+            vp[con] = (1-w)*vp[con] + (w/4)*(vp[con+1]+vpi[con%nfilas]+vp[con-nfilas]);
+          }
+
+
+
+        }
+      }
+
+      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
+
+      /*
+      ----------------------------------------------------------------------------
+      VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI - VPI
+      ----------------------------------------------------------------------------
+      */
+
+      vpi[0] = (1-w)*vpi[0] + (w/4)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)] + vei[0]);
+      for(con = 1 ; con<(nfilas-1);con++){
+        if(vp[con]!=50.0 && vp[con]!=-50.0 ){
+          vpi[con] = (1-w)*vpi[con] + (w/4)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]+vei[con]);
+        }
+      }
+      vpi[nfilas-1] = (1-w)*vpi[nfilas-1] + (w/4)*(vpi[nfilas-2]+vp[nfilas*(fpp-2)-1]+vei[nfilas-1]);
+
+
+
+    }
+
+    MPI_Barrier(MPI_COMM_WORLD);
   }
 
+  /*
+  //IMRIME LAS LISTAS EXTREMAS - REVISAR BUENA COMUNICACION
   for(con1=0;con1<world_size;con1++){
     if(world_rank==0){
       for(con=0;con<nfilas;con++){
@@ -323,7 +574,8 @@ FASE DE COMUNICACION Y PROMEDIO
    }
     MPI_Barrier(MPI_COMM_WORLD);
 
-  }
+  }*/
+
 
   /*
 --------------------------------------------------------------
@@ -334,7 +586,7 @@ FASE DE COMUNICACION Y PROMEDIO
   */
 
   //iteramos sobre los procesadores
-  /* for(con=0;con<world_size;con++){
+   for(con=0;con<world_size;con++){
      if(world_rank==con){
       //cada proc imprime los suyo
 
@@ -361,7 +613,7 @@ FASE DE COMUNICACION Y PROMEDIO
   }
 
   printf("%d",world_size);
-  */
+  
 
 
   MPI_Finalize();
