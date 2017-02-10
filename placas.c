@@ -600,7 +600,7 @@ FASE DE COMUNICACION Y PROMEDIO
       printf("\n");
       //las lineas del sanduche
       for(con1 = 0 ; con1<nfilas*(fpp-2);con1++){
-        if(con1%(nfilas)==(nfilas-1) && con1!=0){
+        if(con1%(nfilas)==(nfilas-1)){
           printf("%f \n",vp[con1] );
         }else{
           printf("%f ",vp[con1] );
