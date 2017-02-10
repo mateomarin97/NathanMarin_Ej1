@@ -52,10 +52,6 @@ DECLARACION - DECLARACION - DECLARACION
   float *ves;
   float *vei;
 
-  if(world_rank==0){
-    float *godzilla;
-    godzilla = malloc(nfilas*nfilas*sizeof(float));
-  }
 
   if(world_size==4){
     //a pj1 le cayo en la mitad
@@ -600,10 +596,10 @@ FASE DE COMUNICACION Y PROMEDIO
       //cada proc imprime los suyo
 
       // //la primera linea
-      //  for(con1 = 0 ; con1<nfilas;con1++){
-      //   printf("%f ",vps[con1] );
-      // }
-      // printf("\n");
+       for(con1 = 0 ; con1<nfilas;con1++){
+        printf("%f ",vps[con1] );
+      }
+       // printf("\n");
 
       //
       //
@@ -612,19 +608,19 @@ FASE DE COMUNICACION Y PROMEDIO
           for(con2 = 0 ; con2 < nfilas ; con2++){
               printf("%f ",vp[con1*nfilas +con2] );
           }
-            printf("\n");
+	  //   printf("\n");
 
       }
       //
       //
 
       //la ultima linea
-      // for(con1 = 0 ; con1 < nfilas ; con1++){
-      //   printf("%f ",vpi[con1] );
-      //   if(con1%(nfilas)==(nfilas-1)){
+       for(con1 = 0 ; con1 < nfilas ; con1++){
+         printf("%f ",vpi[con1] );
+	 //  if(con1%(nfilas)==(nfilas-1)){
       //     printf("\n" );
       //   }
-      // }
+       }
 
 
 
@@ -634,10 +630,7 @@ FASE DE COMUNICACION Y PROMEDIO
     MPI_Barrier(MPI_COMM_WORLD);
 
   }
-  if(world_rank==0){
-    godzilla[0] = 4.9;
-    printf("%f\n",godzilla[0] );
-  }
+
 
   // printf("%d",world_size);
 
