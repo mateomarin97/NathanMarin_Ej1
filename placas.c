@@ -38,7 +38,7 @@ DECLARACION - DECLARACION - DECLARACION
   int pj1;
   int pj2;
   int fpp;
-  fpp = nfilas/world_size;
+  fpp = (int)nfilas/world_size;
   int pi;
   pi=fpp*nfilas*world_rank;
   int pf;
@@ -51,6 +51,11 @@ DECLARACION - DECLARACION - DECLARACION
   vpi = malloc(nfilas*sizeof(float));
   float *ves;
   float *vei;
+
+  if(world_rank==0){
+    float *godzilla;
+    godzilla = malloc(nfilas*nfilas*sizeof(float));
+  }
 
   if(world_size==4){
     //a pj1 le cayo en la mitad
@@ -116,22 +121,22 @@ INIZIALIZACION - INICIALIZACION - INICIALIZACION
     if(world_size==2){
 
       for(con=0; con<(p1i - (nfilas));con++){
-	vp[con] = 0.0;
+	       vp[con] = 0.0;
       }
 
       for(con=(p1i - (nfilas));con<(p1f-nfilas);con++){
-	vp[con] = V0/2.0;
+	       vp[con] = V0/2.0;
       }
 
       for(con = (p1f-nfilas);con<nfilas*(fpp-2);con++){
-	vp[con] = 0.0;
+	       vp[con] = 0.0;
       }
 
     }
     //en caso de que no le toquen las placas
     else{
       for(con=0;con<nfilas*(fpp-2);con++){
-	vp[con] = 0.0;
+	       vp[con] = 0.0;
       }
     }
 
@@ -145,21 +150,21 @@ INIZIALIZACION - INICIALIZACION - INICIALIZACION
     //en caso que le toque la placa
     if(world_size==2){
       for(con=0; con<(p2i - (nfilas+pi));con++){
-	vp[con] = 0.0;
+	       vp[con] = 0.0;
       }
 
       for(con=(p2i - (nfilas+pi));con<(p2f-(nfilas+pi));con++){
-	vp[con] = -V0/2.0;
+	       vp[con] = -V0/2.0;
       }
 
       for(con = (p2f-(nfilas+pi));con<nfilas*(fpp-2);con++){
-	vp[con] = 0.0;
+	       vp[con] = 0.0;
       }
     }
     //en caso que no le toque el procesador
     else{
       for(con=0;con<nfilas*(fpp-2);con++){
-	vp[con] = 0.0;
+	       vp[con] = 0.0;
       }
     }
 
@@ -172,14 +177,14 @@ INIZIALIZACION - INICIALIZACION - INICIALIZACION
       //Caso en que no caiga en la ultima promediable
       if(world_size!=32 && world_size!=64){
 	//lenamos los extremos
-	for(con = 0; con<nfilas;con++){
-	  vps[con]= 0.0;
-	  vpi[con]= 0.0;
-	}
+	       for(con = 0; con<nfilas;con++){
+	          vps[con]= 0.0;
+	           vpi[con]= 0.0;
+	          }
 	//llenamos el sanduche de los sanduches
-	for(con = 0 ; con<(p1i-(pi+nfilas)) ; con++){
-	  vp[con] = 0.0;
-	}
+	       for(con = 0 ; con<(p1i-(pi+nfilas)) ; con++){
+        	  vp[con] = 0.0;
+	         }
 	for(con =  (p1i-(pi+nfilas)); con<(p1f-(pi+nfilas)) ; con++){
 	  vp[con] = V0/2.0;
 	}
@@ -628,6 +633,10 @@ FASE DE COMUNICACION Y PROMEDIO
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
 
+  }
+  if(world_rank==0){
+    godzilla[0] = 4.9;
+    printf("%f\n",godzilla[0] );
   }
 
   // printf("%d",world_size);
