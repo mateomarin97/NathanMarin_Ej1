@@ -606,9 +606,7 @@ FASE DE COMUNICACION Y PROMEDIO
           printf("%f ",vp[con1] );
         }
       }
-      if(con!=0 && con!=world_size-1){
-        printf("\n");
-      }
+      
       //la ultima linea
       for(con1 = 0 ; con1<nfilas;con1++){
         printf("%f ",vpi[con1] );
