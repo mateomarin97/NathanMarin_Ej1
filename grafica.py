@@ -1,8 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
-datos= np.loadtxt("datos.dat")
-v=[]
-v = datos
+with open('datos.dat') as f:
+    lines = f.readlines()
+
+datos = lines[0].split(" ")
+
+palabras = []
+lineas = []
+# v = datos
 # Ex=[]
 # Ey=[]
 # for i in range(256):
@@ -14,9 +19,18 @@ v = datos
 # Ey=np.transpose(Ey)
 # Ex=np.array(Ex)
 # Ey=np.array(Ey)
+for i in range(256):
+    palabras = []
+    for j in range(256):
+        print(i , j)
+        palabras.append(float(datos[i*256 + j]))
+    lineas.append(palabras)
+# for i in lineas:
+#     print(len(i))
+#
 x=np.array(range(256))
 plt.figure(figsize=(10,10))
-plt.imshow(v)
+plt.imshow(lineas)
 # plt.streamplot(x,x,Ex,Ey)
 plt.xlim((0,256))
 plt.ylim((256,0))
