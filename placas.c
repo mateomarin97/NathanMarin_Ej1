@@ -33,6 +33,7 @@ DECLARACION - DECLARACION - DECLARACION
 
   int con;
   int con1;
+  int con2;
   //procesadores jodidos porque les tocaron las placas
   int pj1;
   int pj2;
@@ -602,12 +603,12 @@ FASE DE COMUNICACION Y PROMEDIO
       //
       //
       // //las lineas del sanduche
-      for(con1 = 0 ; con1<nfilas*(fpp-2);con1++){
-
-          printf("%f ",vp[con1] );
-          if(con1%(nfilas)==(nfilas-1)){
-            printf("\n" );
+      for(con1 = 0 ; con1<(fpp-2);con1++){
+          for(con2 = 0 ; con2 < nfilas ; con2++){
+              printf("%f ",vp[con1*nfilas +con2] );
           }
+            printf("\n");
+
       }
       //
       //
@@ -624,7 +625,7 @@ FASE DE COMUNICACION Y PROMEDIO
 
     }
     MPI_Barrier(MPI_COMM_WORLD);
-    
+
   }
 
   // printf("%d",world_size);
