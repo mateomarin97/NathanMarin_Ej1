@@ -532,7 +532,7 @@ FASE DE COMUNICACION Y PROMEDIO
 
       vpi[0] = (1-w)*vpi[0] + (w/4)*(vpi[1]+vp[((nfilas*(fpp-2)-1)-nfilas+1)] + vei[0]);
       for(con = 1 ; con<(nfilas-1);con++){
-        if(vp[con]!=50.0 && vp[con]!=-50.0 ){
+        if(vpi[con]!=50.0 && vpi[con]!=-50.0 ){
           vpi[con] = (1-w)*vpi[con] + (w/4)*(vpi[con-1]+vpi[con+1]+vp[con+((nfilas*(fpp-2)-1)-nfilas+1)]+vei[con]);
         }
       }
@@ -613,7 +613,7 @@ FASE DE COMUNICACION Y PROMEDIO
   }
 
   printf("%d",world_size);
-  
+
 
 
   MPI_Finalize();
