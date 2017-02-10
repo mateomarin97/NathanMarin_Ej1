@@ -626,6 +626,7 @@ FASE DE COMUNICACION Y PROMEDIO
     }
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
 
   }
 
