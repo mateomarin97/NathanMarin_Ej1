@@ -8,7 +8,7 @@
 #define nfilas 256
 #define V0 100
 #define N 131072
-#define w 1.97
+#define w 1.0
 #define p1i 26445
 #define p1f 26547
 #define p2i 39501
@@ -261,7 +261,7 @@ FASE DE COMUNICACION Y PROMEDIO
   */
 
 
-  for(con1=0;con1<5;con1++){
+  for(con1=0;con1<N;con1++){
 
     /*
       ---------------------------------------------------------------------------------
@@ -272,11 +272,14 @@ FASE DE COMUNICACION Y PROMEDIO
     if(world_rank==0){
       MPI_Send(vpi,nfilas,MPI_FLOAT,1,0,MPI_COMM_WORLD);
       MPI_Recv(vei,nfilas,MPI_FLOAT,1,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+      
     }
     //Se comunica el ultimo
     else if(world_rank==world_size-1){
       MPI_Send(vps,nfilas,MPI_FLOAT,world_size-2,0,MPI_COMM_WORLD);
       MPI_Recv(ves,nfilas,MPI_FLOAT,world_size-2,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+    
+
     }
     else{
       MPI_Send(vps,nfilas,MPI_FLOAT,world_rank-1,0,MPI_COMM_WORLD);
@@ -324,11 +327,11 @@ FASE DE COMUNICACION Y PROMEDIO
           //puntos no problematicos (esquinas)
           if( con!=(nfilas-1) && con!=((nfilas*(fpp-2)-1)-nfilas+1)){
             //fila superior
-            if(con>0&&con<nfilas-1){
+            if( con>0 && con< (nfilas-1) ){
               vp[con]= (1-w)*vp[con] + (w/4.0)*(vp[con+1]+vp[con-1]+vps[con]+vp[con+nfilas]);
             }
             //columna izq
-            else if(con%nfilas==0){
+            else if( con%nfilas == 0 ){
               vp[con] = (1-w)*vp[con] + (w/4.0)*(vp[con-nfilas]+vp[con+1]+vp[con+nfilas]);
             }
             //columan der
@@ -357,7 +360,7 @@ FASE DE COMUNICACION Y PROMEDIO
         }
       }
 
-      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4.0)*(vp[nfilas*(fpp-2)-2]+vp[((nfilas)*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
+      vp[nfilas*(fpp-2)-1] = (1-w)*vp[nfilas*(fpp-2)-1] + (w/4.0)*(vp[nfilas*(fpp-2)-2]+vp[(nfilas*(fpp-2)-1)-nfilas]+vpi[nfilas-1]);
 
       /*
       ----------------------------------------------------------------------------
@@ -586,7 +589,7 @@ FASE DE COMUNICACION Y PROMEDIO
   */
 
   //iteramos sobre los procesadores
-   for(con=0;con<world_size;con++){
+    for(con=0;con<world_size;con++){
      if(world_rank==con){
       //cada proc imprime los suyo
 
@@ -614,7 +617,7 @@ FASE DE COMUNICACION Y PROMEDIO
 
   printf("%d",world_size);
 
-
+  
 
   MPI_Finalize();
   return 0;
