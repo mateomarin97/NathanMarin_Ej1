@@ -624,6 +624,7 @@ FASE DE COMUNICACION Y PROMEDIO
 
     }
     MPI_Barrier(MPI_COMM_WORLD);
+    
   }
 
   // printf("%d",world_size);
