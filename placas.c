@@ -593,24 +593,24 @@ FASE DE COMUNICACION Y PROMEDIO
      if(world_rank==con){
       //cada proc imprime los suyo
 
-      //la primera linea
-       for(con1 = 0 ; con1<nfilas;con1++){
-        printf("%f ",vps[con1] );
-      }
-      printf("\n");
-
-
-
-      //las lineas del sanduche
-      for(con1 = 0 ; con1<nfilas*(fpp-2);con1++){
-
-          printf("%f ",vp[con1] );
-          if(con1%(nfilas)==(nfilas-1)){
-            printf("\n" );
-          }
-      }
-
-
+      // //la primera linea
+      //  for(con1 = 0 ; con1<nfilas;con1++){
+      //   printf("%f ",vps[con1] );
+      // }
+      // printf("\n");
+      //
+      //
+      //
+      // //las lineas del sanduche
+      // for(con1 = 0 ; con1<nfilas*(fpp-2);con1++){
+      //
+      //     printf("%f ",vp[con1] );
+      //     if(con1%(nfilas)==(nfilas-1)){
+      //       printf("\n" );
+      //     }
+      // }
+      //
+      //
 
       //la ultima linea
       for(con1 = 0 ; con1 < nfilas ; con1++){
