@@ -272,13 +272,13 @@ FASE DE COMUNICACION Y PROMEDIO
     if(world_rank==0){
       MPI_Send(vpi,nfilas,MPI_FLOAT,1,0,MPI_COMM_WORLD);
       MPI_Recv(vei,nfilas,MPI_FLOAT,1,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-      
+
     }
     //Se comunica el ultimo
     else if(world_rank==world_size-1){
       MPI_Send(vps,nfilas,MPI_FLOAT,world_size-2,0,MPI_COMM_WORLD);
       MPI_Recv(ves,nfilas,MPI_FLOAT,world_size-2,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-    
+
 
     }
     else{
@@ -615,9 +615,9 @@ FASE DE COMUNICACION Y PROMEDIO
     MPI_Barrier(MPI_COMM_WORLD);
   }
 
-  printf("%d",world_size);
+  // printf("%d",world_size);
 
-  
+
 
   MPI_Finalize();
   return 0;
