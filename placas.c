@@ -589,9 +589,10 @@ FASE DE COMUNICACION Y PROMEDIO
 --------------------------------------------------------------
 --------------------------------------------------------------
   */
-
+  MPI_Barrier(MPI_COMM_WORLD);
   //iteramos sobre los procesadores
     for(con=0;con<world_size;con++){
+      MPI_Barrier(MPI_COMM_WORLD);
      if(world_rank==con){
       //cada proc imprime los suyo
 
@@ -626,8 +627,8 @@ FASE DE COMUNICACION Y PROMEDIO
 
     }
     MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
+
+
 
   }
 

@@ -3,7 +3,7 @@ import numpy as np
 with open('datos.dat') as f:
     lines = f.readlines()
 
-datos = lines[0].split(" ")
+datos = lines[0].split(",")
 
 palabras = []
 lineas = []
