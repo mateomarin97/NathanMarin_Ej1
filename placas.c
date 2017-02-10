@@ -613,10 +613,13 @@ FASE DE COMUNICACION Y PROMEDIO
 
 
       //la ultima linea
-      for(con1 = 0 ; con1<nfilas;con1++){
+      for(con1 = 0 ; con1 < nfilas ; con1++){
         printf("%f ",vpi[con1] );
+        if(con1%(nfilas)==(nfilas-1)){
+          printf("\n" );
+        }
       }
-      printf("\n");
+
 
 
     }
