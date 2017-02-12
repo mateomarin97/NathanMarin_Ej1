@@ -51,6 +51,12 @@ DECLARACION - DECLARACION - DECLARACION
   vpi = malloc(nfilas*sizeof(float));
   float *ves;
   float *vei;
+  //Lista donde cada procesador va a guardar todos su voltajes al final
+  float *vpf;
+  vpf = malloc(nfilas*fpp*sizeof(float));
+  //Lista donde el cero va a guardar todos los voltajes al final
+  float *vpt;
+
 
 
   if(world_size==4){
@@ -87,6 +93,7 @@ DECLARACION - DECLARACION - DECLARACION
   if(world_rank==0){
 
     vei = malloc(nfilas*sizeof(float));
+    vpt = malloc(nfilas*nfilas*sizeof(float));
   }
   else if(world_rank == (world_size-1)){
 
@@ -583,13 +590,59 @@ FASE DE COMUNICACION Y PROMEDIO
 
 
   /*
+
+
+-------------------------------------------------------------
+-------------------------------------------------------------
+Llena vpf y posteriormente comunica todo al cero
+-------------------------------------------------------------
+-------------------------------------------------------------
+  */
+  for(con1=0;con1<world_size;con1++){
+    if(world_rank==con1){
+      for(con=0;con<(fpp*nfilas);con++){
+	if(con<nfilas){
+	  vpf[con]=vps[con];
+	}
+	else if(con>=nfilas && con<(nfilas+(fpp-2)*nfilas)){
+	  vpf[con]=vp[con];
+	}
+	else {
+	  vpf[con]=vpi[con];
+	}
+      }
+    }
+
+    MPI_Barrier(MPI_COMM_WORLD);
+
+  }
+
+  //Finalmente le comunico todo al cero
+
+  MPI_Gather(vpf,nfilas*fpp,MPI_FLOAT,vpt,nfilas*fpp,MPI_FLOAT,0,MPI_COMM_WORLD);
+
+  /*
 --------------------------------------------------------------
 --------------------------------------------------------------
  IMPRIMIR EL ESTADO ACTUAL DEL GRID
 --------------------------------------------------------------
 --------------------------------------------------------------
   */
-  MPI_Barrier(MPI_COMM_WORLD);
+  if(world_rank==0){
+    for(con=0;con<nfilas*nfilas;con++){
+      printf("%f ,",vpt[con]);
+      if(con%nfilas==(nfilas-1)){
+	printf("\n");
+      }
+
+    }
+
+  }
+
+
+
+
+  /*  MPI_Barrier(MPI_COMM_WORLD);
   //iteramos sobre los procesadores
     for(con=0;con<world_size;con++){
       MPI_Barrier(MPI_COMM_WORLD);
@@ -632,7 +685,7 @@ FASE DE COMUNICACION Y PROMEDIO
 
 
   }
-
+  */
 
   // printf("%d",world_size);
 
