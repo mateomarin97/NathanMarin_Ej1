@@ -1,7 +1,7 @@
 #PBS -q batch
 #PBS -N out
 #PBS -l nodes=1:ppn=4
-#PBS -M mneira011@gmail.com
+#PBS -M mateomarin97@gmail.com
 #PBS -m abe
 
 module load openmpi/1.8.5
