@@ -630,7 +630,7 @@ Llena vpf y posteriormente comunica todo al cero
   */
   if(world_rank==0){
     for(con=0;con<nfilas*nfilas;con++){
-      printf("%f ,",vpt[con]);
+      printf("%f ",vpt[con]);
       if(con%nfilas==(nfilas-1)){
 	printf("\n");
       }
