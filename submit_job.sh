@@ -1,6 +1,6 @@
 #PBS -q batch
 #PBS -N out
-#PBS -l nodes=1:ppn=8
+#PBS -l nodes=1:ppn=4
 #PBS -M mneira011@gmail.com
 #PBS -m abe
 
