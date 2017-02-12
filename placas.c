@@ -638,7 +638,7 @@ SUAVICEMOS UN POCO
 */
 //Suavizo la primer linea
 
-
+ for(con1=0;con1<100;con1++){
   if(world_rank==0){
       vpt[0]=(vpt[1]+vpt[nfilas])/4.0;
       for(con=1;con<nfilas-1;con++){
@@ -665,7 +665,7 @@ SUAVICEMOS UN POCO
        vpt[(nfilas*nfilas)-1]=(vpt[((nfilas*nfilas)-1)-1]+vpt[((nfilas*nfilas)-1)-nfilas])/4.0;
 
    }
-
+ }
 
   /*
 --------------------------------------------------------------
