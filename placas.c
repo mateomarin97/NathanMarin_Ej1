@@ -35,7 +35,7 @@ DECLARACION - DECLARACION - DECLARACION
   int con1;
   int con2;
   float h;
-  h= L/nfilas;
+  h= ((float)L)/((float)nfilas);
   //procesadores jodidos porque les tocaron las placas
   int pj1;
   int pj2;
