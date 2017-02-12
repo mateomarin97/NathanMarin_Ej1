@@ -629,6 +629,42 @@ Llena vpf y posteriormente comunica todo al cero
   MPI_Gather(vpf,nfilas*fpp,MPI_FLOAT,vpt,nfilas*fpp,MPI_FLOAT,0,MPI_COMM_WORLD);
 
 
+/*
+--------------------------------------------------------------
+--------------------------------------------------------------
+SUAVICEMOS UN POCO 
+--------------------------------------------------------------
+--------------------------------------------------------------
+*/
+//Suavizo la primer linea
+
+
+  if(world_rank==0){
+      vpt[0]=(vpt[1]+vpt[nfilas])/4.0;
+      for(con=1;con<nfilas-1;con++){
+   	  vpt[con]=(vpt[con-1]+vpt[con+1]+vpt[con+nfilas])/4.0;
+       }
+       vpt[nfilas-1]=(vpt[nfilas-2]+vpt[nfilas-1+nfilas])/4.0;
+       for(con=nfilas;con<(nfilas*nfilas-1)-nfilas+1;con++){
+    	   if(vpt[con]!=50.0 && vpt[con]!=-50.0){
+	      if(con%nfilas==0){
+	         vpt[con]=(vpt[con+1]+vpt[con-nfilas]+vpt[con+nfilas])/4.0;
+	      }
+	      else if(con%nfilas==nfilas-1){
+	         vpt[con]=(vpt[con-1]+vpt[con-nfilas]+vpt[con+nfilas])/4.0;
+	      }
+	      else {
+		 vpt[con]=(vpt[con-1]+vpt[con+1]+vpt[con-nfilas]+vpt[con+nfilas])/4.0;
+	      }
+           }
+       }
+       vpt[(nfilas*nfilas-1)-nfilas+1]=(vpt[((nfilas*nfilas-1)-nfilas+1)+1]+vpt[((nfilas*nfilas-1)-nfilas+1)-nfilas])/4.0;
+       for(con=((nfilas*nfilas-1)-nfilas+1)+1;con<(nfilas*nfilas)-1;con++){
+	   vpt[con]=(vpt[con-1]+vpt[con+1]+vpt[con-nfilas])/4.0;
+       }
+       vpt[(nfilas*nfilas)-1]=(vpt[((nfilas*nfilas)-1)-1]+vpt[((nfilas*nfilas)-1)-nfilas])/4.0;
+
+   }
 
 
   /*
@@ -656,10 +692,10 @@ CALCULA CAMPOS ELECTRICOS
      for(con=0;con<nfilas;con++){
        Ey[con]=-vpt[con+nfilas]/(2.0*h);
      }
-     for(con=nfilas;con<(nfilas*nfilas)-nfilas;con++){
+     for(con=nfilas;con<((nfilas*nfilas)-nfilas);con++){
        Ey[con]= (vpt[con-nfilas]-vpt[con+nfilas])/(2.0*h);
      }
-     for(con=(nfilas*nfilas)-nfilas;con<nfilas*nfilas;con++){
+     for(con=((nfilas*nfilas)-nfilas);con<nfilas*nfilas;con++){
        Ey[con]=vpt[con-nfilas]/(2.0*h);
      }
 
