@@ -34,6 +34,8 @@ DECLARACION - DECLARACION - DECLARACION
   int con;
   int con1;
   int con2;
+  float h;
+  h= L/nfilas;
   //procesadores jodidos porque les tocaron las placas
   int pj1;
   int pj2;
@@ -56,7 +58,10 @@ DECLARACION - DECLARACION - DECLARACION
   vpf = malloc(nfilas*fpp*sizeof(float));
   //Lista donde el cero va a guardar todos los voltajes al final
   float *vpt;
-
+  //Lista con campo electrico en x
+  float *Ex;
+  //Lista con campo electrico en y
+  float *Ey;
 
 
   if(world_size==4){
@@ -94,6 +99,8 @@ DECLARACION - DECLARACION - DECLARACION
 
     vei = malloc(nfilas*sizeof(float));
     vpt = malloc(nfilas*nfilas*sizeof(float));
+    Ex = malloc(nfilas*nfilas*sizeof(float));
+    Ey = malloc(nfilas*nfilas*sizeof(float));
   }
   else if(world_rank == (world_size-1)){
 
@@ -621,6 +628,48 @@ Llena vpf y posteriormente comunica todo al cero
 
   MPI_Gather(vpf,nfilas*fpp,MPI_FLOAT,vpt,nfilas*fpp,MPI_FLOAT,0,MPI_COMM_WORLD);
 
+
+
+
+  /*
+--------------------------------------------------------------
+--------------------------------------------------------------
+CALCULA CAMPOS ELECTRICOS
+--------------------------------------------------------------
+--------------------------------------------------------------
+   */
+
+  if(world_rank==0){
+
+     for(con=0;con<nfilas*nfilas;con++){
+       if(con%nfilas==0){
+	 Ex[con]=-vpt[con+1]/(2.0*h);
+       }
+       else if(con%nfilas==nfilas-1){
+	 Ex[con]=vpt[con-1]/(2.0*h);
+       }
+       else{
+	 Ex[con]=(vpt[con-1]-vpt[con+1])/(2.0*h);
+       }
+     }
+
+     for(con=0;con<nfilas;con++){
+       Ey[con]=-vpt[con+nfilas]/(2.0*h);
+     }
+     for(con=nfilas;con<(nfilas*nfilas)-nfilas;con++){
+       Ey[con]= (vpt[con-nfilas]-vpt[con+nfilas])/(2.0*h);
+     }
+     for(con=(nfilas*nfilas)-nfilas;con<nfilas*nfilas;con++){
+       Ey[con]=vpt[con-nfilas]/(2.0*h);
+     }
+
+  }
+
+
+
+
+
+
   /*
 --------------------------------------------------------------
 --------------------------------------------------------------
@@ -631,6 +680,22 @@ Llena vpf y posteriormente comunica todo al cero
   if(world_rank==0){
     for(con=0;con<nfilas*nfilas;con++){
       printf("%f ",vpt[con]);
+      if(con%nfilas==(nfilas-1)){
+	printf("\n");
+      }
+
+    }
+
+     for(con=0;con<nfilas*nfilas;con++){
+      printf("%f ",Ex[con]);
+      if(con%nfilas==(nfilas-1)){
+	printf("\n");
+      }
+
+    }
+
+      for(con=0;con<nfilas*nfilas;con++){
+      printf("%f ",Ey[con]);
       if(con%nfilas==(nfilas-1)){
 	printf("\n");
       }
